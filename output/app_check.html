@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Campus Customs — App Check</title>
+<style>
+  :root {
+    --yale-blue: #00356b;
+    --yale-blue-dark: #001f3d;
+    --gold: #c9a44c;
+    --text: #1b2430;
+    --text-muted: #667082;
+    --border: #e3e7ee;
+    --bg-soft: #f6f8fb;
+    --ok-green: #1e6b3c;
+    --ok-green-bg: #eef8f1;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text);
+    background: #fff;
+  }
+  header {
+    background: linear-gradient(135deg, var(--yale-blue) 0%, var(--yale-blue-dark) 100%);
+    color: #fff;
+    padding: 40px 24px;
+  }
+  header .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.78rem;
+    color: var(--gold);
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  header h1 {
+    margin: 0 0 10px;
+    font-size: 1.9rem;
+  }
+  header p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.82);
+    max-width: 720px;
+    line-height: 1.6;
+  }
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+  .check {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 32px;
+    background: #fff;
+  }
+  .check-number {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--yale-blue-dark);
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 4px 11px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .check h2 {
+    margin: 0 0 6px;
+    color: var(--yale-blue);
+    font-size: 1.3rem;
+  }
+  .check .what {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin: 0 0 18px;
+  }
+  .check img {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0, 53, 107, 0.12);
+    margin-bottom: 16px;
+  }
+  .caption {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .caption strong { color: var(--yale-blue); }
+  .verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--ok-green-bg);
+    color: var(--ok-green);
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .note {
+    border-left: 3px solid var(--gold);
+    background: var(--bg-soft);
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    border-radius: 0 8px 8px 0;
+    margin-top: 16px;
+  }
+  .note strong { color: var(--text); }
+  footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    padding: 0 24px 40px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Campus Customs — Problem 11</p>
+  <h1>Live app check</h1>
+  <p>
+    Three checks against the running app (frontend at localhost:5173, backend at
+    localhost:8000, database campus_customs.db) — screenshotted directly from the browser,
+    not staged. Each heading below states what's being checked; each caption states what the
+    screenshot actually proves, checked against the real database.
+  </p>
+</header>
+
+<main>
+
+  <section class="check">
+    <span class="check-number">Check 1</span>
+    <h2>Chat checks real inventory — honest stock and price from the DB</h2>
+    <p class="what">
+      Asked the chat: "Is the Crew Left Chest Hoodie in stock in a small, and how much is it?"
+    </p>
+    <span class="verified">✓ Verified against campus_customs.db</span>
+    <img src="app_check_images/inventory.png" alt="Chat reply showing the Crew Left Chest Hoodie's real price and Small stock count" />
+    <p class="caption">
+      The reply says <strong>"$68, small is running low — only 12 left in stock."</strong>
+      Both numbers were checked directly against the database:
+      <code>catalogue.price = 68.0</code> and <code>inventory</code> has
+      <code>product_id='crew-left-chest-hoodie', size='S', quantity=12</code>. Neither number
+      is invented — both come from the same three lookup tools
+      (<code>get_descriptions</code>/<code>get_prices</code>/<code>get_stock</code>) documented
+      in <code>output/harness.md</code>.
+    </p>
+    <div class="note">
+      <strong>Found and fixed while recording this check:</strong> the very first attempt at
+      this exact question came back <em>"sold out — 0 in stock,"</em> which was wrong and
+      reproducible (3/3 runs). Traced to two real bugs — sizes were sorted alphabetically
+      instead of garment order (putting <code>M: 0</code> right before <code>S: 12</code> in
+      what the model reads), and the candidate list handed to the model had silently lost
+      <code>search_catalogue</code>'s relevance ranking, so the right product could land
+      anywhere among several similarly-named ones. Fixed both at the data layer, re-ran the
+      identical prompt 4 times afterward (4/4 correct), then took the screenshot above. Full
+      writeup in <code>output/harness.md</code>, "Post-launch fix" section.
+    </div>
+  </section>
+
+  <section class="check">
+    <span class="check-number">Check 2</span>
+    <h2>Dynamic search-result cards after a category question</h2>
+    <p class="what">
+      Asked the chat: "What hoodies do you have?" — no product named, just a category.
+    </p>
+    <span class="verified">✓ Real product cards, not text-only</span>
+    <img src="app_check_images/search_results.png" alt="A results shelf on the page showing five real hoodie product cards after asking the chat about hoodies" />
+    <p class="caption">
+      The agent searched the catalogue and returned 5 real hoodies; the front end rendered
+      them as an actual "From your chat" shelf on the page itself — using the exact same
+      <code>ProductCard</code> component the Products grid uses, with real photos, names, and
+      prices, each one still linking to its own product detail page. This is the Problem 7
+      API contract (agent returns structured matches, front end renders them) working live.
+    </p>
+  </section>
+
+  <section class="check">
+    <span class="check-number">Check 3</span>
+    <h2>Usability feature (Problem 9): mobile navigation actually reaches every link</h2>
+    <p class="what">
+      Resized the browser to a real phone width (375px) and opened the nav menu.
+    </p>
+    <span class="verified">✓ "Log in" reachable — previously it was not</span>
+    <img src="app_check_images/mobile_nav.png" alt="The mobile navigation menu open, showing Home, Products, About Us, Log in, and Create account all reachable" />
+    <p class="caption">
+      Before this fix, the nav's mobile rule hid "Log in" and "Log out" outright with
+      <code>display: none</code> and nothing to replace them — a shopper on a phone had no way
+      to reach either. The screenshot shows the fix: a real hamburger menu that lists every
+      link the desktop nav has, including "Log in," fully tappable. Full before/after detail
+      in <code>output/usability.md</code>.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  Campus Customs · app check generated from a live local run · see AI_prompts.md for the exact prompts behind each problem
+</footer>
+
+</body>
+</html>

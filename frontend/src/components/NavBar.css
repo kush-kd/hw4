@@ -1,0 +1,211 @@
+.navbar {
+  background: var(--yale-blue);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 2px 16px rgba(0, 20, 45, 0.25);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  gap: 24px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+}
+
+.crest {
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+
+.navbar-wordmark {
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.navbar-wordmark span {
+  color: var(--bulldog-accent);
+}
+
+.navbar-links {
+  display: flex;
+  gap: 28px;
+  flex: 1;
+  justify-content: center;
+}
+
+.navbar-link {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.9rem;
+  padding: 6px 2px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.navbar-link:hover {
+  color: #fff;
+}
+
+.navbar-link.active {
+  color: #fff;
+  border-bottom-color: var(--gold);
+}
+
+.navbar-auth {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.navbar-auth-link {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.85rem;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+
+.navbar-auth-link:hover {
+  color: #fff;
+}
+
+.navbar-auth-cta {
+  background: var(--gold);
+  color: var(--yale-blue-dark) !important;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.navbar-auth-cta:hover {
+  background: #dcb968;
+}
+
+.navbar-greeting {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.navbar-logout {
+  background: none;
+  border: none;
+  font-family: inherit;
+  padding: 0;
+}
+
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  background: none;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.navbar-hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.navbar-hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar-hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.navbar-mobile-menu {
+  display: flex;
+  flex-direction: column;
+  background: var(--yale-blue-dark);
+  padding: 8px 24px 20px;
+  animation: mobile-menu-drop 0.15s ease;
+}
+
+@keyframes mobile-menu-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-mobile-link {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.95rem;
+  padding: 12px 4px;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: inherit;
+}
+
+.navbar-mobile-link.active {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.navbar-mobile-cta {
+  color: var(--gold) !important;
+  font-weight: 600;
+}
+
+.navbar-mobile-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+  margin: 6px 0;
+}
+
+.navbar-mobile-greeting {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.82rem;
+  padding: 8px 4px 0;
+}
+
+/* Below this width, the inline nav/auth links genuinely don't fit — "Log
+   in" (and, when signed in, "Log out") had no way to be reached at all, since
+   the old rule just hid them outright with no menu to find them in. Swap to
+   a hamburger + dropdown that keeps every link reachable instead. */
+@media (max-width: 760px) {
+  .navbar-links,
+  .navbar-auth,
+  .navbar-wordmark {
+    display: none;
+  }
+  .navbar-hamburger {
+    display: flex;
+  }
+}
+
+@media (min-width: 761px) {
+  .navbar-mobile-menu {
+    display: none;
+  }
+}
