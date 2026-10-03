@@ -1,21 +1,7 @@
-# secrets (see .env.example — nothing real is actually needed, but
-# never commit a real .env if one gets created)
+# Safety net at the repo root — the real rules live in hw4/.gitignore.
+# Never commit secrets, the database, or product images.
 .env
-.env.local
-
-# data (per assignment: do not commit the database or product images)
-data/campus_customs.db
-data/products/
-
-# frontend
-frontend/node_modules/
-frontend/dist/
-
-# backend
-backend/.venv/
-backend/__pycache__/
-**/__pycache__/
-*.pyc
-
-# editor/OS
+**/.env
+**/campus_customs.db
+**/data/products/
 .DS_Store

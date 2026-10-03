@@ -204,14 +204,15 @@ Consolidated into one "Safety rules" section, reasoned from how a normal custome
 - **Password hashing:** PBKDF2-HMAC-SHA256, 120,000 iterations, per-user salt (`backend/auth.py`), matching the seed data's own scheme.
 - **Retries:** the subscription CLI call retries up to 3 times with backoff on a transient failure, but never retries an auth failure (`llm/claude_client.py`).
 
-**How to run front + back**, from the project root (`/Users/kd/Documents/Claude`, one level above `HW4/`):
+**How to run front + back** (full setup, including placing the data pack, is in `README.md`). From the `hw4/` folder, in two terminals:
 
 ```
 # backend — http://localhost:8000
-HW4/backend/.venv/bin/uvicorn main:app --reload --port 8000 --app-dir HW4/backend
+cd backend
+source .venv/bin/activate        # after: python3 -m venv .venv && pip install -r ../requirements.txt
+uvicorn main:app --reload --port 8000
 
 # frontend — http://localhost:5173 (proxies /api and /media to :8000)
-npm --prefix HW4/frontend run dev
+cd frontend
+npm install && npm run dev
 ```
-
-Or, equivalently, from inside each folder: `cd HW4/backend && source .venv/bin/activate && uvicorn main:app --reload --port 8000`, and `cd HW4/frontend && npm run dev`.

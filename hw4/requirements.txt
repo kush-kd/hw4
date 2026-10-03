@@ -1,9 +1,10 @@
-fastapi
-uvicorn[standard]
+fastapi==0.141.1
+uvicorn[standard]==0.54.0
 
 # Deliberately NOT listed: any API-key-based LLM client (openai, anthropic,
 # etc). Every model call in this project goes through the Claude Code CLI
 # already installed on the machine (`claude -p`), authenticated with the
 # developer's own Claude Code subscription -- never a package-level API key.
 # See llm/claude_client.py and output/harness.md for the full explanation.
-pydantic-ai
+pydantic==2.13.5
+pydantic-ai==2.51.0
